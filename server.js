@@ -31,9 +31,13 @@ app.get("/", (req, res) => {
     //renders the index.html file
     res.render('index', {text: "...And this is more Text"})
     //{text:} adds to the page
-    
-
 })
+
+//import users router
+const userRouter = require('./routes/users')
+
+//Link Routes
+app.use('/users', userRouter)
 
 //make servern run pass through port #
 app.listen(3000)
