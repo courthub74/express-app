@@ -5,7 +5,6 @@ const express = require("express")
 const router = express.Router()
 
 router.get('/', (req, res) => {
-	//will use post request but for now
 	res.send("User List")
 })
 
@@ -20,10 +19,30 @@ router.get('/old', (req, res) => {
 	res.send("Old User Form")
 })
 
+//Post new user
+router.post('/', (req, res) => {
+	res.send("Create User")
+})
+
 //for getting individual user
 router.get('/:id', (req, res) => {
     req.params.id
-	res.send(`User Get with ID ${req.params.id}`)
+	res.send(`Get User with ID ${req.params.id}`)
 })
+
+//for updating individual user
+router.put('/:id', (req, res) => {
+    req.params.id
+	res.send(`Update User with ID ${req.params.id}`)
+})
+
+//for deleting individual user
+router.delete('/:id', (req, res) => {
+    req.params.id
+	res.send(`Delete User with ID ${req.params.id}`)
+})
+
+
+
 
 module.exports = router
