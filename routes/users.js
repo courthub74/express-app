@@ -8,20 +8,34 @@ router.get('/', (req, res) => {
 	res.send("User List")
 })
 
+// router.get('/new', (req, res) => {
+// 	//will request new users
+// 	res.send("User New Form")
+// })
+
+//get for the users/new.ejs form
 router.get('/new', (req, res) => {
 	//will request new users
-	res.send("User New Form")
+	res.render("users/new")
 })
+
+//Post new user (routed to /users)
+// router.post('/', (req, res) => {
+// 	res.send("Create User")
+// })
+
+//Post new user (for the users/new.ejs form)
+router.post('/', (req, res) => {
+	console.log(req.body.firstName)
+	res.send(`Hello ${req.body.firstName}`)
+})
+
+
 
 //Just a new page
 router.get('/old', (req, res) => {
 	//will request old users
 	res.send("Old User Form")
-})
-
-//Post new user
-router.post('/', (req, res) => {
-	res.send("Create User")
 })
 
 //for getting individual user

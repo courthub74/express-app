@@ -13,28 +13,34 @@ app.set('view engine', 'ejs')
 //use the logout middleware
 app.use(logger)
 
+//to access the static files in the public folder
+app.use(express.static("public"))
+
+//access info coming from forms
+app.use(express.urlencoded({ extended: true }))
+
 //set up routes ("/" - root path)
-app.get("/", (req, res) => {
+// app.get("/", (req, res) => {
 
-    //sends a status
-    //res.sendStatus(200).send("OK")
+//     //sends a status
+//     //res.sendStatus(200).send("OK")
 
-    //downloads the server.js file
-    //res.download("server.js")
+//     //downloads the server.js file
+//     //res.download("server.js")
 
-    //to pass a string to console
-    console.log("Hello World")
+//     //to pass a string to console
+//     console.log("Hello World")
 
-    //just pass a string
-    //res.send("Hello World")
+//     //just pass a string
+//     //res.send("Hello World")
 
-    //pass a json
-    //res.json({ message: "Hello World"})
+//     //pass a json
+//     //res.json({ message: "Hello World"})
 
-    //renders the index.html file
-    res.render('index', {text: "...And this is more Text"})
-    //{text:} adds to the page
-})
+//     //renders the index.html file
+//     res.render('index', {text: "...And this is more Text"})
+//     //{text:} adds to the page
+// })
 
 //import users router
 const userRouter = require('./routes/users')
