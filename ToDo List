@@ -1,0 +1,463 @@
+install node
+REST Client
+
+
+
+upon install creates a package.json
+
+in it under "scripts" add:
+
+"start" :"node index.js"
+
+
+
+npm install express
+
+create index.js
+
+put  a console.log() in there
+
+run:
+
+npm start
+
+(should print in the console.log in the terminal)
+
+now in package.json:
+under "main" type in 
+	-"type": "module" (tells it to use esx modules)
+
+in index.js
+
+import Express from "express"; (optional)
+
+const app = Express();
+
+//GET, PUT, POST, DELETE
+
+app.get("/", (req, res) => {
+	res.send("Hello World")
+}
+
+
+app.listen(port, () => console.log("listening on port" + port))
+
+app.put()
+app.delete()
+
+////////////////////////////
+
+TO GET A JSON TO PRINT OUT:
+
+first add a js file with an object, exported in root folder 
+
+i.e.:
+
+const things =
+[
+    {
+      "thing": 1,
+    },
+    {
+      "thing": 2,
+    },
+]
+
+export default things;
+
+app.get("/", (req, res) => {
+	res.json(things);
+}
+
+/////////////////////////////
+
+
+TO GET A JSON TO PRINT OUT BY ID:
+
+in index.js:
+
+app.get('/things/:id', (req, res) => {
+    res.status(200);
+    res.json(photos.find((photos) => {
+        return +req.params.id === photos.id
+    }))
+
+in http.rest:
+
+GET http://localhost:3000/things/1
+
+
+then when you change the param to 2
+	the json switches automatically
+
+/////////////////////////////////////
+
+TO ADD A POST REQUEST:
+in the http.rest:
+
+POST http://localhost:3000/add
+Content-Type: application/json
+
+//below it add a json
+{
+	"title": 'thing',
+	"id": '3',
+}
+
+
+then in index.js:
+under const port = 3000;
+      app.use(Express.json());
+      app.use(Express.urlencoded({ extended: true }))
+
+then under app.get():
+
+type:
+
+app.post("/add", (req, res) => {
+    console.log(req.body.id)
+    res.sendStatus(200);
+})
+
+//This will send back an OK and print the added ID in the terminal
+
+///////////////////////////
+
+FOR MIDDLEWARE
+
+under const app = Express(); block:
+
+type:
+
+function mid(req, res, next) {
+    console.log(req.query);
+    console.log(req.params);
+    next();
+}
+
+then in app.get:
+
+type mid between "/things/:id" and (req, res)
+
+then in the GET request you can add a query like
+
+/1?court=5
+
+then your query and ID should both print out
+
+////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////
+
+WEBDEVSIMPLIFIED
+
+npm init -y
+
+npm i express
+
+in package.json under "scripts":
+	erase the "test" and paste in:
+
+		"devStart": "nodemon server.js"
+
+create a server.js file
+
+npm i --save-dev nodemon  (nodemon is for automatic changes per save)
+
+npm run devStart
+
+NOW you can enter output into server.js
+
+	i.e. console.log("Hello World");
+
+///////////////////////////also enter the basic template from here://////////////////////
+
+//Require express library that was downloaded
+const express = require("express")
+
+//set up the server with app variable calling express as a function
+const app = express()
+
+//set up routes ("/" - root path)
+app.get("/", (req, res) => {
+
+    //sends a status
+    //res.sendStatus(200).send("OK")
+
+    //downloads the server.js file
+    //res.download("server.js")
+
+    //to pass a string to console
+    console.log("Hello World")
+
+    //just pass a string
+    //res.send("Hello World")
+
+    //pass a json
+    //res.json({ message: "Hello World"})
+
+    //renders the index.html file
+    res.render('index')
+
+    // res.render("index", { text: "Your Life will surely change"})
+
+})
+
+//make servern run pass through port #
+app.listen(3000)
+
+/////////////////////////////////////////////////////////////////////////////////////////////////
+
+in the app.get you have options:
+-res.sendStatus(200)
+or
+-res.sendStatus(200).send("OK")
+or
+-res.sendStatus(200).json({ message: "OK"})
+or
+-res.sendStatus(500).json({ message: "Error"})
+or
+res.download("server.js") //downloads the server.js file
+or
+res.render('index') //renders the index.html file
+
+but first you have to create a views folder:
+and create an index.html or jsx file in it
+
+now
+
+npm i ejs 
+
+then in server.js:
+
+//for assigning ejs
+
+app.set('view engine', 'ejs')
+
+now
+
+rename index.html to index.ejs
+
+to pass info from server to views, 
+	type a second parameter in render like so:
+		res.render('index', {text: "More text"})
+then on the index.ejs side:
+	<%= text %> (add that in the body)
+
+NOTE: <%= text %>  text just matches what is on the server.js render. you could prob call it anything
+
+//now generate users
+
+under the first app.get request:
+
+app.get('/users', (req, res) => {
+	//will use post request but for now
+	res.send("User List")
+})
+
+app.get('/users/new', (req, res) => {
+	//will use post request but for now
+	res.send("User New Form")
+})
+
+OR 
+
+you can create a folder in the root folder called 'routes'
+ 
+in it:
+
+create a users.js file
+
+and take the 'users' app.get and turn them into 
+
+router.get('/', (req, res) => {
+	//will use post request but for now
+	res.send("User List")
+})
+
+router.get('/new', (req, res) => {
+	//will use post request but for now
+	res.send("User New Form")
+})
+
+then add these to the top of page:
+
+const express = require("express")
+const router = express.Router()
+
+then add to bottom of page:
+
+module.exports = router
+
+then import it to server.js
+
+const userRouter = require('./routes/users')
+
+NOW link Routes in /users to the userRouter
+
+app.use('/users', userRouter)
+
+Then to add a new page(route)
+just add a:
+
+router.get('/old', (req, res) => {
+	res.send("Old User Form")
+})
+
+and to add one that gets users by ID:
+
+//for getting individual user
+router.get('/:id', (req, res) => {
+    req.params.id
+	res.send(`User Get with ID ${req.params.id}`)
+})
+
+ABOVE is just an example
+
+also do put to update
+	delete to delete
+
+/////////////////////////////////////////////////////
+
+Create MIDDLEWARE for identifying users
+
+on users.js:
+
+const users = [{ name: "Kyle" }, { name: "Sally"}]
+router.param("id", (req, res, next, id) => {
+    req.user = users[id]
+    next()
+}
+
+/////Create MIDDLEWARE (runs between start and end of request)
+
+on server.js:
+
+	like for logging out something
+
+	function logger(req, res, next) {
+        console.log(req.originalUrl)
+        next()
+      }
+
+//then use the middleware
+	//put this under the app.set
+	   on server.js
+app.use(logger)
+
+//Now lets render a file
+////create a folder called public
+	in server.js
+		type:
+			app.use(express.static("public"))
+
+//Then to add more pages
+////create a folder called test inside the public one
+	create an html file
+
+//then you can access it by typing the path in the url
+	..../test/pgname.html
+
+//////
+
+//////////////Render a Form///////////
+
+in the users.js:
+
+create a get:
+
+router.get("/new", (req, res) => {
+	res.render("users/new")
+}
+
+then in the views folder:
+ 
+  create a users/new.ejs file
+
+	init:  (create the form in an HTML template)
+
+    <form action="/users" method="POST">
+        <label>First Name</label>
+        <input type="text" name="firstName" value="<%= locals.firstName %>" />
+        <button type="submit">Submit</button>
+    </form>
+
+/////then in the users.js file///////
+
+type in:
+
+for the users/new.ejs form
+
+//get (for the users/new.ejs form)
+router.get('/new', (req, res) => {
+	//will request new users
+	res.render("users/new")
+})
+
+//Post new user (for the users/new.ejs form)
+router.post('/', (req, res) => {
+	console.log(req.body.firstName)
+	res.send(`Hello ${req.body.firstName}`)
+})
+
+then in server.js:
+
+type:
+
+//access info coming from forms
+app.use(express.urlencoded({ extended: true }))
+
+
+now change the above router.post to:
+
+
+//Post new user (for the users/new.ejs form)
+router.post('/', (req, res) => {
+	console.log(req.user)
+	const isValid = true
+	if (isValid) {
+		users.push({ firstName: req.body.firstName })
+		res.redirect(`/users/${users.length - 1}`)
+	} else {
+		console.log("Error")
+		res.render('users/new', { firstName: req.body.firstName })
+	}
+})
+
+
+
+NOW when you enter the name and submit you should print { firstName: 'Name entered' } in the console
+and be redirected to the get user by ID page.
+
+
+///////NOW for JSON////////
+
+in server.js:
+
+//to parse json information
+app.use(express.json())
+	prob need more on this
+
+
+then: 
+
+under router.get:
+
+	console.log(req.query.name)
+
+then type in the url:
+
+/users?name="theName"
+
+
+the console should print out the name
+
+//////////////////////////////////////////////////////////////////
+
+//OR//for assigning jsx
+
+npm install express-react-views react react-dom
+
+app.set('view engine', 'jsx')  
+app.engine('jsx', require('express-react-views').createEngine())
+	
