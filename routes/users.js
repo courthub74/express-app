@@ -5,7 +5,8 @@ const express = require("express")
 const router = express.Router()
 
 router.get('/', (req, res) => {
-	res.send("User List")
+	console.log(req.query.name)
+	res.send(`User entered: ${req.query.name}`)
 })
 
 // router.get('/new', (req, res) => {
@@ -26,8 +27,15 @@ router.get('/new', (req, res) => {
 
 //Post new user (for the users/new.ejs form)
 router.post('/', (req, res) => {
-	console.log(req.body.firstName)
-	res.send(`Hello ${req.body.firstName}`)
+	console.log(req.user)
+	const isValid = true
+	if (isValid) {
+		users.push({ firstName: req.body.firstName })
+		res.redirect(`/users/${users.length - 1}`)
+	} else {
+		console.log("Error")
+		res.render('users/new', { firstName: req.body.firstName })
+	}
 })
 
 
