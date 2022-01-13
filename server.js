@@ -10,6 +10,9 @@ const app = express()
 //Tell app to use view engine
 app.set('view engine', 'ejs')
 
+//use the logout middleware
+app.use(logger)
+
 //set up routes ("/" - root path)
 app.get("/", (req, res) => {
 
@@ -38,6 +41,12 @@ const userRouter = require('./routes/users')
 
 //Link Routes
 app.use('/users', userRouter)
+
+//Middleware for logging
+function logger(req, res, next) {
+	console.log(req.originalUrl)
+	next()
+}
 
 //make servern run pass through port #
 app.listen(3000)
